@@ -8,10 +8,15 @@ class User
 {
 	protected $id;
 	protected $first_name;
+	protected $middle_name;
 	protected $last_name;
 	protected $email;
 	protected $pass;
 	protected $created_at;
+	protected $birthdate;
+	protected $gender;
+	protected $address;
+	protected $contact_number;
 
 	public function getId()
 	{
@@ -20,7 +25,7 @@ class User
 
 	public function getFullName()
 	{
-		return $this->first_name . ' ' . $this->last_name;
+		return $this->first_name . $this->middle_name . $this->last_name;
 	}
 
 	public function getFirstName()
@@ -28,6 +33,11 @@ class User
 		return $this->first_name;
 	}
 
+	public function getMiddleName()
+	{
+		return $this->middle_name;
+	}
+	
 	public function getLastName()
 	{
 		return $this->last_name;
@@ -36,6 +46,26 @@ class User
 	public function getEmail()
 	{
 		return $this->email;
+	}
+
+	public function getBirthdate()
+	{
+		return $this->birthdate;
+	}
+
+	public function getGender()
+	{
+		return $this->gender;
+	}
+
+	public function getAddress()
+	{
+		return $this->address;
+	}
+
+	public function getContactNumber()
+	{
+		return $this->contact_number;
 	}
 
 	public static function getById($id)
@@ -63,54 +93,51 @@ class User
 
 	public static function hashPassword($password)
 	{
-		$hashed_password = null;
-		// DO SOMETHING HERE TO HASH THE PASSWORD
-		// ...
+		$hashed_password = password_hash($password, PASSWORD_BCRYPT);
 		return $hashed_password;
 	}
 
 	public static function attemptLogin($email, $pass)
 	{
 		global $conn;
-
 		try {
-			$sql = "
+			$stmt = $conn->query("SELECT password FROM users WHERE email='".$email."' LIMIT 1");
+			while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+				if (password_verify($pass, $row[0])) {
+					$sql = "
 				SELECT * FROM users
 				WHERE email=:email
-					AND pass=:pass
 				LIMIT 1
-			";
-			$statement = $conn->prepare($sql);
-
-			// Perform password hash verification (if necessary)
-
-			$statement->execute([
-				'email' => $email,
-				'pass' => $pass
-			]);
-			$result = $statement->fetchObject('App\User');
-			return $result;
+					";
+					$statement = $conn->prepare($sql);
+					$statement->execute([
+						'email' => $email
+					]);
+					$result = $statement->fetchObject('App\User');
+					return $result;
+				} else {
+					return null;
+				}
+			}
 		} catch (PDOException $e) {
 			error_log($e->getMessage());
 		}
-
 		return null;
 	}
 
-	public static function register($first_name, $last_name, $email, $password)
+	public static function register($first_name, $middle_name, $last_name, $email, $password, $birthdate, $gender, $address, $contact_number)
 	{
 		global $conn;
 
 		try {
-			// Hash the password before inserting it to DB
-			// ..
+			$class = new User;
+			$password = $class->hashPassword($password);
 
 			$sql = "
-				INSERT INTO users (first_name, last_name, email, pass)
-				VALUES ('$first_name', '$last_name', '$email', '$password')
+				INSERT INTO users (first_name, middle_name, last_name, email, password, birthdate, gender, address, contact_number)
+				VALUES ('$first_name', '$middle_name', '$last_name', '$email', '$password', '$birthdate', '$gender', '$address', '$contact_number')
 			";
 			$conn->exec($sql);
-			// echo "<li>Executed SQL query " . $sql;
 			return $conn->lastInsertId();
 		} catch (PDOException $e) {
 			error_log($e->getMessage());
@@ -125,19 +152,21 @@ class User
 
 		try {
 			foreach ($users as $user) {
-				// Hash the password before inserting it to DB
-				// ..
-
+				$password = hashPassword($user['pass']);
 				$sql = "
 					INSERT INTO users
 					SET
-						first_name=\"{$user['first_name']}\",
-						last_name=\"{$user['last_name']}\",
-						email=\"{$user['email']}\",
-						pass=\"{$user['pass']}\"
+						first_name= \"{$user['first_name']}\",
+						middle_name= \"{$user['middle_name']}\",
+						last_name= \"{$user['last_name']}\",
+						email= \"{$user['email']}\",
+						password= \"{$password}\",
+						birthdate= \"{$user['birthdate']}\",
+						gender= \"{$user['gender']}\",
+						address= \"{$user['first_name']}\",
+						contact_number= \"{$user['first_name']}\"
 				";
 				$conn->exec($sql);
-				// echo "<li>Executed SQL query " . $sql;
 			}
 			return true;
 		} catch (PDOException $e) {
