@@ -13,122 +13,92 @@ $user = User::getById($_SESSION['user']['id']);
 
 ?>
 
+
+
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Welcome</title>
-    </head>
-    <body>
-        <h1>Welcome <?php echo $_SESSION['user']['fullname']; ?></h1>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="https://www.auf.edu.ph/images/favicon.png">
+  <title>Welcome Page</title>
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+    .quote {
+      font-size: 1.5rem;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
 
-        <h2>User Information</h2>
+    .user-info-table th {
+      width: 30%;
+    }
 
-        <table bgcolor="gold" border="1" cellpadding="10">
-            <tr>
-                <td>User ID</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getId();?>
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td>First Name</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getFirstName();?>
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td>Middle Name</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getMiddleName();?>
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td>Last Name</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getLastName();?>
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getEmail();?>
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td>Birthdate</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getBirthdate();?>
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td>Gender</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getGender();?>
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td>Address</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getAddress();?>
-                    </strong>
-                </td>
-            </tr>
-            <tr>
-                <td>Contact Number</td>
-                <td>
-                    <strong>
-                        <?php echo $user->getContactNumber();?>
-                    </strong>
-                </td>
-            </tr>
-        </table>
-
-        <h4>Ecclesiastes 3:1-8</h4>
-        <pre>
-        There is a time for everything,
-            and a season for every activity under the heavens:
-            a time to be born and a time to die,
-            a time to plant and a time to uproot,
-            a time to kill and a time to heal,
-            a time to tear down and a time to build,
-            a time to weep and a time to laugh,
-            a time to mourn and a time to dance,
-            a time to scatter stones and a time to gather them,
-            a time to embrace and a time to refrain from embracing,
-            a time to search and a time to give up,
-            a time to keep and a time to throw away,
-            a time to tear and a time to mend,
-            a time to be silent and a time to speak,
-            a time to love and a time to hate,
-            a time for war and a time for peace.
-        </pre>
-
-        <a href="logout.php">LOGOUT</a>
-    </body>
+    .user-info-table td {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+   <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 mt-5">
+        <div class="card">
+          <div class="card-header">
+            <h4>Welcome <?php echo $_SESSION['user']['fullname']; ?></h4>
+          </div>
+          <div class="card-body">
+            <p class="quote">"The future belongs to those who believe in the beauty of their dreams." - Eleanor Roosevelt</p>
+            <table class="table user-info-table">
+              <tbody>
+                <tr>
+                  <th>User ID</th>
+                  <td><?php echo $user->getId();?></td>
+                </tr>
+                <tr>
+                  <th>First Name:</th>
+                  <td><?php echo $user->getFirstName();?></td>
+                </tr>
+                <tr>
+                  <th>Middle Name:</th>
+                  <td><?php echo $user->getMiddleName();?></td>
+                </tr>
+                <tr>
+                  <th>Last Name:</th>
+                  <td><?php echo $user->getLastName();?></td>
+                </tr>
+                <tr>
+                  <th>Email:</th>
+                  <td><?php echo $user->getEmail();?></td>
+                </tr>
+                <tr>
+                  <th>Birthdate:</th>
+                  <td><?php echo $user->getBirthdate();?></td>
+                </tr>
+                <tr>
+                  <th>Gender:</th>
+                  <td><?php echo $user->getGender();?></td>
+                </tr>
+                <tr>
+                  <th>Address:</th>
+                  <td><?php echo $user->getAddress();?></td>
+                </tr>
+                <tr>
+                  <th>Contact Number:</th>
+                  <td><?php echo $user->getContactNumber();?></td>
+                </tr>
+              </tbody>
+            </table>
+            <form action="logout.php" method="POST">
+              <button type="submit" class="btn btn-primary btn-block">Logout</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap CDN JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
 </html>
-
-<hr />
-<pre>
-SESSION DATA
-
-<?php
-var_dump($_SESSION);
-?>
-</pre>
