@@ -5,17 +5,17 @@ require "../config.php";
 use App\User;
 
 try {
-	$result = User::attemptLogin('apolinario@mabini.ph', 'FILIPINAS');
+	$result = User::attemptLogin('emma.williams@example.com', 'secretpassword');
 	echo "<pre>";
 	var_dump($result);
 	echo "</pre>";
 
-	$result = User::attemptLogin('jose@rizal.ph', 'WRONG PASSWORD');
+	$result = User::attemptLogin('john.doe@example.com', 'wrong password');
 	echo "<pre>";
 	var_dump($result);
 	echo "</pre>";
 
-	$result = User::attemptLogin('antonio@luna.ph', 'ARTIKULOUNO');
+	$result = User::attemptLogin('jane.johnson@example.com', 'mysecurepassword');
 	echo "<pre>";
 	var_dump($result);
 	echo "</pre>";

@@ -152,7 +152,8 @@ class User
 
 		try {
 			foreach ($users as $user) {
-				$password = hashPassword($user['pass']);
+				$class = new User;
+				$password = $class->hashPassword($user['password']);
 				$sql = "
 					INSERT INTO users
 					SET
@@ -163,8 +164,8 @@ class User
 						password= \"{$password}\",
 						birthdate= \"{$user['birthdate']}\",
 						gender= \"{$user['gender']}\",
-						address= \"{$user['first_name']}\",
-						contact_number= \"{$user['first_name']}\"
+						address= \"{$user['address']}\",
+						contact_number= \"{$user['contact_number']}\"
 				";
 				$conn->exec($sql);
 			}
